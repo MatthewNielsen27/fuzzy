@@ -15,25 +15,25 @@ def impulse(x: float) -> float:
     return 1.0 if abs(x) < 1e-2 else 0.0
 
 
-def z_sat(x: float, z1: float, z2: float) -> float:
+def z_sat(x: float, a: float, b: float) -> float:
     """Z-shape saturating function"""
-    if x < z1:
+    if x <= a:
         return 1.0
-    elif x > z2:
+    elif x >= b:
         return 0.0
+    elif a < x <= (a+b)/2:
+        return 1 - (2 * pow((x-a)/(b-a), 2))
     else:
-        m = (0 - 1) / (z2 - z1)
-        b = -m * z2
-        return (m * x) + b
+        return 2 * pow((x-b)/(b-a), 2)
 
 
-def s_sat(x: float, z1: float, z2: float) -> float:
+def s_sat(x: float, a: float, b: float) -> float:
     """S-shape saturating function"""
-    if x < z1:
+    if x <= a:
         return 0.0
-    elif x > z2:
-        return 0.0
+    elif x >= b:
+        return 1.0
+    elif a < x <= (a+b)/2:
+        return 2 * pow((x-a)/(b-a), 2)
     else:
-        m = (1 - 0) / (z2 - z1)
-        b = -m * z2
-        return (m * x) + b
+        return 1 - (2 * pow((x-b)/(b-a), 2))
